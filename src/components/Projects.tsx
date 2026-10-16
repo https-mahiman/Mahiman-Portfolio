@@ -1,0 +1,191 @@
+"use client";
+import { ArrowUpRight } from "lucide-react";
+
+const projects = [
+  {
+    number: "01",
+    name: "Pulsefy",
+    type: "Music player",
+    description:
+      "An offline music player with song collections, favorites, playlists, downloads, and theme options.",
+    technologies: ["Mobile development", "Expo", "App UI"],
+    demo: "https://pulsefy-app.vercel.app/",
+    code: "https://github.com/https-mahiman",
+    color: "from-violet-500/30 to-blue-500/20",
+    initials: "P",
+    image: "",
+  },
+  {
+    number: "02",
+    name: "InvestConnect",
+    type: "Full-stack web application",
+    description:
+      "A web application project focused on investment-related users and structured information flows.",
+    technologies: ["React", "Node.js", "MongoDB"],
+    image: "/images/investconnect.png",
+    demo: "",
+    code: "https://github.com/https-mahiman/investconnect",
+    color: "from-cyan-500/30 to-indigo-500/20",
+    initials: "IC",
+  },
+  {
+    number: "03",
+    name: "SuperMall",
+    type: "E-commerce application",
+    description:
+      "An e-commerce project focused on product discovery and shopping-related user flows.",
+    technologies: ["React", "Node.js", "MongoDB"],
+    image: "/images/supermall.png",
+    demo: "",
+    code: "https://github.com/https-mahiman/mahiman.supermall.com",
+    color: "from-orange-500/30 to-rose-500/20",
+    initials: "SM",
+  },
+  {
+    number: "04",
+    name: "Student Management App",
+    type: "Mobile application",
+    description:
+      "A Flutter project exploring student data management and mobile application UI patterns.",
+    technologies: ["Flutter", "Dart"],
+    image: "images/sms.png",
+    demo: "",
+    code: "https://github.com/https-mahiman/student-management-app",
+    color: "from-emerald-500/30 to-teal-500/20",
+    initials: "ST",
+  },
+];
+
+export default function Projects() {
+  return (
+    <section id="projects" className="scroll-mt-24 bg-[#0b0f1a] py-24 sm:py-28">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-300">
+              Selected work
+            </p>
+            <h2 className="mt-4 max-w-2xl text-4xl font-semibold text-white sm:text-5xl">
+              Projects built through curiosity.
+            </h2>
+          </div>
+
+          <a
+            href="https://github.com/https-mahiman"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white"
+          >
+            More on GitHub <ArrowUpRight size={16} />
+          </a>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {projects.map((project) => (
+            <article
+              key={project.name}
+              className="group overflow-hidden rounded-2xl border border-white/10 bg-[#080b14] transition hover:-translate-y-1 hover:border-white/20"
+            >
+              <div
+                className={`relative flex aspect-16/8 items-center justify-center overflow-hidden bg-linear-to-br ${project.color}`}
+              >
+                <div className="absolute h-44 w-44 rounded-full border border-white/15 transition duration-700 group-hover:scale-125" />
+                <div className="absolute h-32 w-32 rounded-full border border-white/15" />
+
+                {/* <span className="relative text-6xl font-semibold tracking-tight text-white">
+                  {project.initials}
+                </span> */}
+
+                <div
+                  ref={(el) => {
+                    if (el) {
+                      el.style.setProperty("--preview-scale", "1");
+                    }
+                  }}
+                  className="relative h-74 w-full overflow-hidden bg-[#0b0f1a]"
+                >
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={`${project.name} screenshot`}
+                      className="h-full w-full object-contain"
+                      loading="lazy"
+                      suppressHydrationWarning
+                    />
+                  ) : project.demo ? (
+                    <iframe
+                      src={project.demo}
+                      title={`${project.name} website preview`}
+                      className="absolute left-0 top-0 h-200 w-7xl origin-top-left scale-50 border-0"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div
+                      className={`flex h-full w-full items-center justify-center bg-linear-to-br ${project.color}`}
+                    >
+                      <span className="text-6xl font-semibold text-white">
+                        {project.initials}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <span className="absolute left-5 top-5 rounded-full border border-white/15 bg-black/20 px-3 py-1.5 text-xs text-white">
+                  {project.number}
+                </span>
+              </div>
+
+              <div className="p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-widest text-blue-300">
+                  {project.type}
+                </p>
+
+                <h3 className="mt-3 text-2xl font-semibold text-white">
+                  {project.name}
+                </h3>
+
+                <p className="mt-3 leading-7 text-slate-400">
+                  {project.description}
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {project.technologies.map((technology) => (
+                    <span
+                      key={technology}
+                      className="rounded-full bg-white/6 px-3 py-1.5 text-xs text-slate-300"
+                    >
+                      {technology}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-6 flex flex-wrap gap-5">
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-white hover:text-blue-300"
+                    >
+                      Live demo <ArrowUpRight size={16} />
+                    </a>
+                  )}
+
+                  <a
+                    href={project.code}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white"
+                  >
+                    {/* <Github size={16} />  */}
+                    Source code <ArrowUpRight size={14} />
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

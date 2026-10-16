@@ -1,0 +1,305 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import PortraitFrame from "./PortraitFrame";
+
+export default function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = heroRef.current;
+    if (!section) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      const timeline = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+
+      timeline
+        .from(".hero-eyebrow", {
+          y: 16,
+          opacity: 0,
+          duration: 0.5,
+        })
+        .from(
+          ".hero-title-line",
+          {
+            y: 32,
+            opacity: 0,
+            stagger: 0.12,
+            duration: 0.65,
+          },
+          "-=0.2",
+        )
+        .from(
+          ".hero-description, .hero-actions, .hero-social",
+          {
+            y: 18,
+            opacity: 0,
+            stagger: 0.12,
+            duration: 0.5,
+          },
+          "-=0.25",
+        )
+        .from(
+          ".hero-orbit, .hero-blob, .hero-monogram",
+          {
+            scale: 0.88,
+            opacity: 0,
+            stagger: 0.1,
+            duration: 0.75,
+          },
+          "-=0.6",
+        )
+        .from(
+          ".hero-floating",
+          {
+            y: 12,
+            opacity: 0,
+            stagger: 0.1,
+            duration: 0.4,
+          },
+          "-=0.35",
+        );
+
+      gsap.to(".hero-blob", {
+        rotate: 8,
+        scale: 1.035,
+        duration: 4,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+      gsap.to(".hero-code-card", {
+        y: -8,
+        duration: 2.6,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+      gsap.to(".hero-tag-bottom", {
+        y: 7,
+        duration: 3.1,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+      gsap.to(".hero-orbit-one", {
+        rotate: 335,
+        duration: 30,
+        ease: "none",
+        repeat: -1,
+      });
+
+      gsap.to(".hero-orbit-two", {
+        rotate: 405,
+        duration: 36,
+        ease: "none",
+        repeat: -1,
+      });
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      ref={heroRef}
+      id="home"
+      aria-labelledby="hero-heading"
+      className="relative isolate mx-auto grid min-h-180 max-w-full grid-cols-1 items-center gap-12 overflow-hidden bg-[#0b0f1a] px-5 pb-24 pt-28 sm:px-8 md:min-h-170 md:grid-cols-2 md:gap-8 md:px-12 lg:px-16"
+    >
+      {/* Background glows */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-40 top-0 -z-10 h-96 w-96 rounded-full bg-blue-600/10 blur-[120px]"
+      />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-32 top-1/3 -z-10 h-96 w-96 rounded-full bg-violet-600/10 blur-[120px]"
+      />
+
+      {/* Hero introduction */}
+      <div className="relative z-10">
+        <div className="hero-eyebrow mb-6 flex flex-wrap items-center gap-3 font-mono text-[10px] tracking-[1.5px] text-slate-400 sm:text-[11px]">
+          <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#55e5ad]" />
+          <span>FULL-STACK DEVELOPER</span>
+          <span className="text-blue-300">/</span>
+          <span>AHMEDABAD, INDIA</span>
+        </div>
+
+        <h1
+          id="hero-heading"
+          className="mb-6 text-4xl font-extrabold leading-[1.08] tracking-[-2px] text-white sm:text-5xl sm:tracking-[-3px] lg:text-7xl"
+        >
+          <span className="hero-title-line block">I turn ideas into</span>
+
+          <span className="hero-title-line block">
+            interactive{" "}
+            <span className="bg-linear-to-r from-blue-300 via-blue-400 to-violet-400 bg-clip-text text-transparent">
+              digital
+            </span>
+          </span>
+
+          <span className="hero-title-line block bg-linear-to-r from-blue-300 via-blue-400 to-violet-400 bg-clip-text text-transparent">
+            experiences.
+          </span>
+        </h1>
+
+        <p className="hero-description max-w-xl text-sm leading-8 text-slate-400 sm:text-base">
+          I&apos;m Mahiman Bhatt, a developer working with React, Next.js and
+          Node.js, currently expanding into Flutter and cross-platform mobile
+          development.
+        </p>
+
+        {/* Call-to-action buttons */}
+        <div className="hero-actions mt-8 flex flex-wrap gap-3">
+          <a
+            href="#projects"
+            className="inline-flex min-h-12 items-center gap-3 rounded-xl bg-linear-to-r from-blue-500 to-violet-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/30 transition duration-300 hover:-translate-y-1 hover:shadow-blue-500/20"
+          >
+            Explore my work <span>↗</span>
+          </a>
+
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/2.5 px-5 py-3 text-sm font-bold text-white transition duration-300 hover:-translate-y-1 hover:border-blue-300/30 hover:bg-white/5"
+          >
+            ↓ Download resume
+          </a>
+        </div>
+
+        {/* Social links */}
+        <div className="hero-social mt-8 flex flex-wrap items-center gap-3">
+          <a
+            href="https://github.com/https-mahiman"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#080b14] text-xs font-bold text-slate-200 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-300"
+          >
+            GH
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/mahiman-bhatt/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#080b14] text-xs font-bold text-slate-200 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-300"
+          >
+            in
+          </a>
+
+          <a
+            href="mailto:work.mahiman@gmail.com"
+            aria-label="Email"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#080b14] text-sm text-slate-200 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-300"
+          >
+            ✉
+          </a>
+
+          <span className="ml-1 text-xs text-slate-500">
+            Open to suitable roles &amp; projects
+          </span>
+        </div>
+      </div>
+
+      {/* Abstract developer artwork */}
+      <div
+        className="relative mx-auto aspect-square w-full max-w-135"
+        role="img"
+        aria-label="Abstract developer artwork with an M monogram, orbit rings and floating code"
+      >
+        {/* Orbit rings */}
+        <div
+          aria-hidden="true"
+          className="hero-orbit hero-orbit-one absolute left-1/2 top-1/2 z-0 aspect-square w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-400/30"
+        />
+
+        <div
+          aria-hidden="true"
+          className="hero-orbit hero-orbit-two absolute left-1/2 top-1/2 z-0 h-[58%] w-[86%] -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[50%] border border-violet-400/25"
+        />
+
+        {/* Blue-violet central glow */}
+        <div
+          aria-hidden="true"
+          className="hero-blob absolute left-1/2 top-1/2 z-1 aspect-square w-[61%] -translate-x-1/2 -translate-y-1/2 -rotate-12 rounded-[46%_54%_60%_40%/45%_40%_60%_55%] bg-linear-to-br from-blue-500 via-indigo-600 to-violet-600 shadow-[0_0_65px_rgba(75,92,255,0.25)] after:absolute after:inset-1.75 after:rounded-[inherit] after:bg-linear-to-br after:from-slate-950/20 after:to-slate-950/70"
+        />
+
+        {/* Portrait */}
+        <PortraitFrame />
+
+        {/* Floating code card */}
+        <div className="hero-floating hero-code-card absolute -left-2 top-[13%] z-10 rounded-xl border border-blue-300/20 bg-[#080b14]/95 px-4 py-3 font-mono text-[9px] leading-[1.9] text-slate-200 shadow-xl shadow-black/30 backdrop-blur-xl sm:-left-4 sm:text-[10px] lg:-left-8">
+          <div className="mb-2 tracking-[3px] text-slate-500">● ● ●</div>
+
+          <code>
+            <span className="text-blue-300">const</span> developer = {"{"}
+            <br />
+            &nbsp; name:{" "}
+            <span className="text-violet-300">&quot;Mahiman&quot;</span>,
+            <br />
+            &nbsp; focus:{" "}
+            <span className="text-violet-300">&quot;Building&quot;</span>,
+            <br />
+            &nbsp; goal:{" "}
+            <span className="text-violet-300">&quot;Impact&quot;</span>
+            <br />
+            {"};"}
+          </code>
+        </div>
+
+        {/* Technology tags */}
+        <div className="hero-floating absolute right-0 top-[25%] z-10 rounded-xl border border-blue-300/20 bg-[#080b14]/95 px-3 py-2.5 font-mono text-[9px] font-semibold text-slate-200 shadow-xl backdrop-blur-xl sm:text-[10px]">
+          React / Next.js
+        </div>
+
+        <div className="hero-floating hero-tag-bottom absolute bottom-[14%] right-0 z-10 max-w-43.75 rounded-xl border border-blue-300/20 bg-[#080b14]/95 px-3 py-2.5 text-center font-mono text-[9px] font-semibold text-slate-200 shadow-xl backdrop-blur-xl sm:max-w-none sm:text-[10px]">
+          Frontend · Backend · Mobile
+        </div>
+
+        {/* Decorative stars */}
+        <span
+          aria-hidden="true"
+          className="hero-floating absolute right-[17%] top-[8%] text-2xl text-blue-400"
+        >
+          ✳
+        </span>
+
+        <span
+          aria-hidden="true"
+          className="hero-floating absolute bottom-[10%] left-[11%] text-xl text-violet-400"
+        >
+          ✦
+        </span>
+      </div>
+
+      {/* Scroll indicator */}
+      <a
+        href="#about"
+        className="absolute bottom-7 left-5 hidden items-center gap-3 font-mono text-[9px] tracking-[1.5px] text-slate-500 transition hover:text-blue-300 md:flex md:left-12 lg:left-16"
+      >
+        <span
+          aria-hidden="true"
+          className="relative h-6 w-4 rounded-full border border-slate-500 before:absolute before:left-1/2 before:top-1 before:h-1 before:w-0.5 before:-translate-x-1/2 before:rounded-full before:bg-blue-300"
+        />
+        SCROLL TO EXPLORE
+      </a>
+    </section>
+  );
+}
