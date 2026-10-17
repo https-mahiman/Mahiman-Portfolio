@@ -34,6 +34,10 @@ const skillGroups = [
       "AI development tools",
     ],
   },
+  {
+    title: "Design Tool",
+    skills: ["Figma"],
+  },
 ];
 
 export default function Skills() {
