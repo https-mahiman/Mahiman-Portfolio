@@ -27,6 +27,7 @@ const skillGroups = [
     skills: [
       "Flutter",
       "Dart",
+      "React Native",
       "Git",
       "GitHub",
       "VS Code",
