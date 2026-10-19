@@ -7,11 +7,13 @@ import Experience from "@/components/Experience";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollAnimations from "@/components/ScrollAnimations";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function HomePage() {
   return (
     <>
       <ScrollAnimations />
+      <Analytics />
 
       <main>
         <script
