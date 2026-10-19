@@ -14,6 +14,18 @@ export default function HomePage() {
       <ScrollAnimations />
 
       <main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Mahiman Bhatt",
+              alternateName: "Mahiman",
+              url: "https://mahiman-portfolio.vercel.app/",
+            }),
+          }}
+        />
         <Navbar />
         <Hero />
         <About />
