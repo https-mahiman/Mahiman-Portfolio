@@ -148,7 +148,7 @@ export default function PortraitFrame() {
   return (
     <div
       ref={portraitRef}
-      className="portrait-frame relative z-10 rounded-3xl border border-white/10 bg-linear-to-br from-blue-500/20 to-violet-500/20 p-3 shadow-2xl shadow-blue-950/30"
+      className="portrait-frame relative z-10 rounded-3xl border border-blue-200 bg-linear-to-br from-blue-500/20 to-violet-500/20 p-3 shadow-2xl shadow-blue-950/15 dark:border-white/10 dark:shadow-blue-950/30"
     >
       <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-linear-to-br from-slate-800 to-blue-950">
         <img

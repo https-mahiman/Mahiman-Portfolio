@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Home, Terminal } from "lucide-react";
 import NotFoundAnimation from "@/components/NotFoundAnimation";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function NotFound() {
   return (
     <NotFoundAnimation>
-      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0b0f1a] px-5 py-20 text-white">
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 px-5 py-20 text-slate-900 dark:bg-[#0b0f1a] dark:text-white">
+        <div className="absolute right-5 top-5 z-20">
+          <ThemeToggle />
+        </div>
         <div className="pointer-events-none absolute inset-0">
           <div className="notfound-glow-blue absolute left-1/2 top-1/2 h-105 w-105 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/10 blur-[120px]" />
 
@@ -22,7 +26,7 @@ export default function NotFound() {
         </div>
 
         <section className="relative z-10 mx-auto w-full max-w-3xl text-center">
-          <div className="notfound-pill mx-auto mb-8 flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300 backdrop-blur">
+          <div className="notfound-pill mx-auto mb-8 flex w-fit items-center gap-2 rounded-full border border-slate-300 bg-white/80 px-4 py-2 text-sm text-slate-700 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
             <Terminal size={16} className="text-blue-300" />
             <span>404 · Page not found</span>
           </div>
@@ -40,7 +44,7 @@ export default function NotFound() {
             Looks like you took a wrong turn.
           </h2>
 
-          <p className="notfound-description mx-auto mt-5 max-w-xl text-base leading-7 text-slate-400 sm:text-lg">
+          <p className="notfound-description mx-auto mt-5 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-400 sm:text-lg">
             The page you are looking for doesn&apos;t exist, has been moved, or
             the URL might be incorrect. Let&apos;s get you back on track.
           </p>
@@ -56,7 +60,7 @@ export default function NotFound() {
 
             <Link
               href="/#contact"
-              className="group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3 font-medium text-slate-200 transition duration-300 hover:-translate-y-1 hover:border-blue-400/50 hover:bg-white/10"
+              className="group inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 font-medium text-slate-800 transition duration-300 hover:-translate-y-1 hover:border-blue-400/50 hover:bg-blue-50 dark:border-white/15 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
             >
               Contact Me
               <ArrowUpRight
@@ -66,13 +70,13 @@ export default function NotFound() {
             </Link>
           </div>
 
-          <div className="notfound-footer mt-12 flex flex-col items-center gap-2 text-sm text-slate-500">
+          <div className="notfound-footer mt-12 flex flex-col items-center gap-2 text-sm text-slate-600 dark:text-slate-500">
             <div className="flex items-center gap-2">
               <ArrowLeft size={14} />
               <span>Even good developers get lost sometimes.</span>
             </div>
 
-            <p className="mt-5 text-xs tracking-widest text-slate-600">
+            <p className="mt-5 text-xs tracking-widest text-slate-500 dark:text-slate-600">
               MAHIMAN BHATT · DEVELOPER PORTFOLIO
             </p>
           </div>

@@ -42,17 +42,17 @@ const skillGroups = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="scroll-mt-24 bg-[#080b14] py-24 sm:py-28">
+    <section id="skills" className="scroll-mt-24 bg-slate-100 py-24 dark:bg-[#080b14] sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-300">
+        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700 dark:text-blue-300">
           Toolkit
         </p>
 
-        <h2 className="mt-4 max-w-2xl text-4xl font-semibold text-white sm:text-5xl">
+        <h2 className="mt-4 max-w-2xl text-4xl font-semibold text-slate-900 dark:text-white sm:text-5xl">
           Tools I use to bring ideas to life.
         </h2>
 
-        <p className="mt-5 max-w-2xl leading-8 text-slate-400">
+        <p className="mt-5 max-w-2xl leading-8 text-slate-600 dark:text-slate-400">
           A growing toolkit across frontend, backend, and mobile development,
           strengthened through projects and practical learning.
         </p>
@@ -61,9 +61,9 @@ export default function Skills() {
           {skillGroups.map((group) => (
             <article
               key={group.title}
-              className="rounded-2xl border border-white/10 bg-white/2.5 p-6"
+              className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-white/2.5"
             >
-              <h3 className="text-xl font-semibold text-white">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
                 {group.title}
               </h3>
 
@@ -71,7 +71,7 @@ export default function Skills() {
                 {group.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full border border-white/10 bg-white/4 px-3 py-2 text-sm text-slate-300"
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700 dark:border-white/10 dark:bg-white/4 dark:text-slate-300"
                   >
                     {skill}
                   </span>

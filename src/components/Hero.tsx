@@ -3,9 +3,59 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import PortraitFrame from "./PortraitFrame";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaInstagram,
+  FaVoicemail,
+  FaEnvelope,
+  FaArrowRight,
+  FaDownload,
+} from "react-icons/fa";
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
+
+  const scrollIndicatorRef = useRef<HTMLSpanElement>(null);
+
+  const dotRef = useRef(null);
+
+  useEffect(() => {
+    const dot = dotRef.current;
+    if (!dot) return;
+
+    const animation = gsap.to(dot, {
+      scale: 1.25,
+      opacity: 1,
+      boxShadow: "0 0 18px #55e5ad",
+      duration: 1.2,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+    });
+
+    return () => {
+      animation.kill();
+    };
+  }, []);
+
+  useEffect(() => {
+    const indicator = scrollIndicatorRef.current;
+    if (!indicator) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(indicator, {
+        y: 5,
+        opacity: 0.65,
+        duration: 0.8,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    }, indicator);
+
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     const section = heroRef.current;
@@ -117,7 +167,7 @@ export default function Hero() {
       ref={heroRef}
       id="home"
       aria-labelledby="hero-heading"
-      className="relative isolate mx-auto grid min-h-180 max-w-full grid-cols-1 items-center gap-12 overflow-hidden bg-[#0b0f1a] px-5 pb-24 pt-28 sm:px-8 md:min-h-170 md:grid-cols-2 md:gap-8 md:px-12 lg:px-16"
+      className="relative isolate mx-auto grid min-h-180 max-w-full grid-cols-1 items-center gap-12 overflow-hidden bg-slate-50 px-5 pb-24 pt-28 dark:bg-[#0b0f1a] sm:px-8 md:min-h-170 md:grid-cols-2 md:gap-8 md:px-12 lg:px-16"
     >
       {/* Background glows */}
       <div
@@ -132,8 +182,11 @@ export default function Hero() {
 
       {/* Hero introduction */}
       <div className="relative z-10">
-        <div className="hero-eyebrow mb-6 flex flex-wrap items-center gap-3 font-mono text-[10px] tracking-[1.5px] text-slate-400 sm:text-[11px]">
-          <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#55e5ad]" />
+        <div className="hero-eyebrow mb-6 flex flex-wrap items-center gap-3 font-mono text-[10px] tracking-[1.5px] text-slate-600 dark:text-slate-400 sm:text-[11px]">
+          <span
+            ref={dotRef}
+            className="inline-block h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#55e5ad]"
+          />
           <span>FULL-STACK DEVELOPER</span>
           <span className="text-blue-300">/</span>
           <span>AHMEDABAD, INDIA</span>
@@ -141,7 +194,7 @@ export default function Hero() {
 
         <h1
           id="hero-heading"
-          className="mb-6 text-4xl font-extrabold leading-[1.08] tracking-[-2px] text-white sm:text-5xl sm:tracking-[-3px] lg:text-7xl"
+          className="mb-6 text-4xl font-extrabold leading-[1.08] tracking-[-2px] text-slate-900 dark:text-white sm:text-5xl sm:tracking-[-3px] lg:text-7xl"
         >
           <span className="hero-title-line block">I turn ideas into</span>
 
@@ -157,7 +210,7 @@ export default function Hero() {
           </span>
         </h1>
 
-        <p className="hero-description max-w-xl text-sm leading-8 text-slate-400 sm:text-base">
+        <p className="hero-description max-w-xl text-sm leading-8 text-slate-600 dark:text-slate-400 sm:text-base">
           I&apos;m Mahiman Bhatt, a developer working with React, Next.js and
           Node.js, currently expanding into Flutter and cross-platform mobile
           development.
@@ -169,16 +222,16 @@ export default function Hero() {
             href="#projects"
             className="inline-flex min-h-12 items-center gap-3 rounded-xl bg-linear-to-r from-blue-500 to-violet-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/30 transition duration-300 hover:-translate-y-1 hover:shadow-blue-500/20"
           >
-            Explore my work <span>↗</span>
+            Explore my work <FaArrowRight size={16} />
           </a>
 
           <a
             href="/resume.pdf"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/2.5 px-5 py-3 text-sm font-bold text-white transition duration-300 hover:-translate-y-1 hover:border-blue-300/30 hover:bg-white/5"
+            className="inline-flex min-h-12 items-center gap-3 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-900 transition duration-300 hover:-translate-y-1 hover:border-blue-300/30 hover:bg-blue-50 dark:border-white/10 dark:bg-white/2.5 dark:text-white dark:hover:bg-white/5"
           >
-            ↓ Download resume
+            <FaDownload size={16} /> Download resume
           </a>
         </div>
 
@@ -189,9 +242,9 @@ export default function Hero() {
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#080b14] text-xs font-bold text-slate-200 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-300"
+            className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-xs font-bold text-slate-700 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-700 dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:text-blue-300"
           >
-            GH
+            <FaGithub size={24} />
           </a>
 
           <a
@@ -199,20 +252,20 @@ export default function Hero() {
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#080b14] text-xs font-bold text-slate-200 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-300"
+            className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-xs font-bold text-slate-700 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-700 dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:text-blue-300"
           >
-            in
+            <FaLinkedin size={24} />
           </a>
 
           <a
             href="mailto:work.mahiman@gmail.com"
             aria-label="Email"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-[#080b14] text-sm text-slate-200 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-300"
+            className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-sm text-slate-700 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-700 dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:text-blue-300"
           >
-            ✉
+            <FaEnvelope size={24} />
           </a>
 
-          <span className="ml-1 text-xs text-slate-500">
+          <span className="ml-1 text-xs text-slate-600 dark:text-slate-500">
             Open to suitable roles &amp; projects
           </span>
         </div>
@@ -245,7 +298,7 @@ export default function Hero() {
         <PortraitFrame />
 
         {/* Floating code card */}
-        <div className="hero-floating hero-code-card absolute -left-2 top-[13%] z-10 rounded-xl border border-blue-300/20 bg-[#080b14]/95 px-4 py-3 font-mono text-[9px] leading-[1.9] text-slate-200 shadow-xl shadow-black/30 backdrop-blur-xl sm:-left-4 sm:text-[10px] lg:-left-8">
+        <div className="hero-floating hero-code-card absolute -left-2 top-[13%] z-10 rounded-xl border border-blue-300/20 bg-white/95 px-4 py-3 font-mono text-[9px] leading-[1.9] text-slate-700 shadow-xl shadow-black/10 backdrop-blur-xl dark:bg-[#080b14]/95 dark:text-slate-200 dark:shadow-black/30 sm:-left-4 sm:text-[10px] lg:-left-8">
           <div className="mb-2 tracking-[3px] text-slate-500">● ● ●</div>
 
           <code>
@@ -265,11 +318,11 @@ export default function Hero() {
         </div>
 
         {/* Technology tags */}
-        <div className="hero-floating absolute right-0 top-[25%] z-10 rounded-xl border border-blue-300/20 bg-[#080b14]/95 px-3 py-2.5 font-mono text-[9px] font-semibold text-slate-200 shadow-xl backdrop-blur-xl sm:text-[10px]">
+        <div className="hero-floating absolute right-0 top-[25%] z-10 rounded-xl border border-blue-300/20 bg-white/95 px-3 py-2.5 font-mono text-[9px] font-semibold text-slate-700 shadow-xl backdrop-blur-xl dark:bg-[#080b14]/95 dark:text-slate-200 sm:text-[10px]">
           React / Next.js
         </div>
 
-        <div className="hero-floating hero-tag-bottom absolute bottom-[14%] right-0 z-10 max-w-43.75 rounded-xl border border-blue-300/20 bg-[#080b14]/95 px-3 py-2.5 text-center font-mono text-[9px] font-semibold text-slate-200 shadow-xl backdrop-blur-xl sm:max-w-none sm:text-[10px]">
+        <div className="hero-floating hero-tag-bottom absolute bottom-[14%] right-0 z-10 max-w-43.75 rounded-xl border border-blue-300/20 bg-white/95 px-3 py-2.5 text-center font-mono text-[9px] font-semibold text-slate-700 shadow-xl backdrop-blur-xl dark:bg-[#080b14]/95 dark:text-slate-200 sm:max-w-none sm:text-[10px]">
           Frontend · Backend · Mobile
         </div>
 
@@ -292,9 +345,10 @@ export default function Hero() {
       {/* Scroll indicator */}
       <a
         href="#about"
-        className="absolute bottom-7 left-5 hidden items-center gap-3 font-mono text-[9px] tracking-[1.5px] text-slate-500 transition hover:text-blue-300 md:flex md:left-12 lg:left-16"
+        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 items-center gap-3 font-mono text-[15px] tracking-[1.5px] text-slate-600 transition hover:text-blue-700 dark:text-slate-500 dark:hover:text-blue-300 md:flex"
       >
         <span
+          ref={scrollIndicatorRef}
           aria-hidden="true"
           className="relative h-6 w-4 rounded-full border border-slate-500 before:absolute before:left-1/2 before:top-1 before:h-1 before:w-0.5 before:-translate-x-1/2 before:rounded-full before:bg-blue-300"
         />
