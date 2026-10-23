@@ -8,12 +8,14 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollAnimations from "@/components/ScrollAnimations";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function HomePage() {
   return (
     <>
       <ScrollAnimations />
       <Analytics />
+      <SpeedInsights />
 
       <main>
         <script
