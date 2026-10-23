@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import Image from "next/image";
 
 export default function PortraitFrame() {
   const portraitRef = useRef<HTMLDivElement>(null);
@@ -10,139 +11,116 @@ export default function PortraitFrame() {
     const frame = portraitRef.current;
     if (!frame) return;
 
-    const ctx = gsap.context(() => {
-      const image = frame.querySelector(".portrait-image");
-      const caption = frame.querySelector(".portrait-caption");
-      const badge = frame.querySelector(".portrait-badge");
+    const image = frame.querySelector(".portrait-image");
+    const caption = frame.querySelector(".portrait-caption");
+    const badge = frame.querySelector(".portrait-badge");
 
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+    if (!image || !caption || !badge) return;
 
-      if (prefersReducedMotion) return;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-      gsap.fromTo(
-        frame,
-        { autoAlpha: 0, y: 40, scale: 0.96 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: frame,
-            start: "top 85%",
-            once: true,
+    if (prefersReducedMotion) {
+      gsap.set([frame, image, caption, badge], {
+        clearProps: "all",
+      });
+      return;
+    }
+
+    let ctx: gsap.Context | undefined;
+
+    const startAnimation = () => {
+      // Prevent the animation from starting more than once
+      if (ctx) return;
+
+      ctx = gsap.context(() => {
+        const timeline = gsap.timeline({
+          defaults: {
+            ease: "power3.out",
           },
-        },
-      );
+        });
 
-      gsap.fromTo(
-        caption,
-        { autoAlpha: 0, y: 18 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.7,
-          delay: 0.3,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: frame,
-            start: "top 85%",
-            once: true,
-          },
-        },
-      );
+        // Set initial states
+        gsap.set(frame, {
+          autoAlpha: 0,
+          y: 35,
+          scale: 0.96,
+        });
 
-      gsap.fromTo(
-        badge,
-        { autoAlpha: 0, x: -15 },
-        {
-          autoAlpha: 1,
-          x: 0,
-          duration: 0.6,
-          delay: 0.45,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: frame,
-            start: "top 85%",
-            once: true,
-          },
-        },
-      );
-
-      gsap.fromTo(
-        image,
-        {
+        gsap.set(image, {
           clipPath: "inset(0 0 0 100%)",
-        },
-        {
-          clipPath: "inset(0 0 0 0%)",
-          duration: 1.2,
-          ease: "power3.inOut",
-          scrollTrigger: {
-            trigger: frame,
-            start: "top 85%",
-            once: true,
-          },
-        },
-      );
-
-      const zoomIn = () => {
-        gsap.to(image, {
-          scale: 1.1,
-          duration: 0.65,
-          ease: "power3.out",
-          overwrite: "auto",
+          scale: 1.08,
         });
 
-        gsap.to(frame, {
-          boxShadow: "0 20px 70px rgba(59, 130, 246, 0.2)",
-          duration: 0.5,
-          overwrite: "auto",
+        gsap.set(caption, {
+          autoAlpha: 0,
+          y: 18,
         });
 
-        gsap.to(caption, {
-          y: -8,
-          duration: 0.4,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      };
-
-      const zoomOut = () => {
-        gsap.to(image, {
-          scale: 1,
-          duration: 0.65,
-          ease: "power3.out",
-          overwrite: "auto",
+        gsap.set(badge, {
+          autoAlpha: 0,
+          x: -15,
         });
 
-        gsap.to(frame, {
-          boxShadow: "0 25px 50px rgba(23, 37, 84, 0.3)",
-          duration: 0.5,
-          overwrite: "auto",
+        // Entrance animation
+        timeline
+          .to(frame, {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.7,
+          })
+          .to(
+            image,
+            {
+              clipPath: "inset(0 0 0 0%)",
+              scale: 1,
+              duration: 1,
+              ease: "power3.inOut",
+            },
+            "-=0.35",
+          )
+          .to(
+            badge,
+            {
+              autoAlpha: 1,
+              x: 0,
+              duration: 0.5,
+            },
+            "-=0.6",
+          )
+          .to(
+            caption,
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.6,
+            },
+            "-=0.35",
+          );
+
+        // Floating / hover animation starts after entrance
+        timeline.call(() => {
+          gsap.to(image, {
+            scale: 1.025,
+            duration: 3,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+          });
         });
+      }, frame);
+    };
 
-        gsap.to(caption, {
-          y: 0,
-          duration: 0.4,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      };
+    // Wait until InitialLoader finishes
+    window.addEventListener("portfolio-loader-complete", startAnimation);
 
-      frame.addEventListener("mouseenter", zoomIn);
-      frame.addEventListener("mouseleave", zoomOut);
+    return () => {
+      window.removeEventListener("portfolio-loader-complete", startAnimation);
 
-      return () => {
-        frame.removeEventListener("mouseenter", zoomIn);
-        frame.removeEventListener("mouseleave", zoomOut);
-      };
-    }, frame);
-
-    return () => ctx.revert();
+      ctx?.revert();
+    };
   }, []);
 
   return (
@@ -151,9 +129,13 @@ export default function PortraitFrame() {
       className="portrait-frame relative z-10 rounded-3xl border border-blue-200 bg-linear-to-br from-blue-500/20 to-violet-500/20 p-3 shadow-2xl shadow-blue-950/15 dark:border-white/10 dark:shadow-blue-950/30"
     >
       <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-linear-to-br from-slate-800 to-blue-950">
-        <img
-          src="/images/mahiman.jpg"
+        <Image
+          src="/images/mahiman.webp"
           alt="Portrait of Mahiman Bhatt"
+          width={600}
+          height={750}
+          priority
+          sizes="(max-width: 768px) 90vw, 600px"
           className="portrait-image h-full w-full object-cover object-center"
         />
 

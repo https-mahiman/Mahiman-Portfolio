@@ -1,61 +1,8 @@
 "use client";
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
-
-const projects = [
-  {
-    number: "01",
-    name: "Pulsefy",
-    type: "Music player",
-    description:
-      "An offline music player with song collections, favorites, playlists, downloads, and theme options.",
-    technologies: ["Mobile development", "Expo", "App UI"],
-    demo: "https://pulsefy-app.vercel.app/",
-    code: "https://github.com/https-mahiman",
-    color: "from-violet-500/30 to-blue-500/20",
-    initials: "P",
-    image: "",
-  },
-  {
-    number: "02",
-    name: "InvestConnect",
-    type: "Full-stack web application",
-    description:
-      "A web application project focused on investment-related users and structured information flows.",
-    technologies: ["React", "Node.js", "MongoDB"],
-    image: "/images/investconnect.png",
-    demo: "",
-    code: "https://github.com/https-mahiman/investconnect",
-    color: "from-cyan-500/30 to-indigo-500/20",
-    initials: "IC",
-  },
-  {
-    number: "03",
-    name: "SuperMall",
-    type: "E-commerce application",
-    description:
-      "An e-commerce project focused on product discovery and shopping-related user flows.",
-    technologies: ["React", "Node.js", "MongoDB"],
-    image: "/images/supermall.png",
-    demo: "",
-    code: "https://github.com/https-mahiman/mahiman.supermall.com",
-    color: "from-orange-500/30 to-rose-500/20",
-    initials: "SM",
-  },
-  {
-    number: "04",
-    name: "Student Management App",
-    type: "Mobile application",
-    description:
-      "A Flutter project exploring student data management and mobile application UI patterns.",
-    technologies: ["Flutter", "Dart"],
-    image: "images/sms.png",
-    demo: "",
-    code: "https://github.com/https-mahiman/student-management-app",
-    color: "from-emerald-500/30 to-teal-500/20",
-    initials: "ST",
-  },
-];
+import projects from "@/data/projects.json";
 
 export default function Projects() {
   return (
@@ -80,6 +27,7 @@ export default function Projects() {
             rel="noreferrer"
             className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
           >
+            <FaGithub size={16} />
             More on GitHub <ArrowUpRight size={16} />
           </a>
         </div>
@@ -109,12 +57,13 @@ export default function Projects() {
                   className="relative h-74 w-full overflow-hidden bg-slate-100 dark:bg-[#0b0f1a]"
                 >
                   {project.image ? (
-                    <img
+                    <Image
                       src={project.image}
                       alt={`${project.name} screenshot`}
+                      width={1200}
+                      height={675}
                       className="h-full w-full object-contain"
                       loading="lazy"
-                      suppressHydrationWarning
                     />
                   ) : project.demo ? (
                     <iframe

@@ -10,6 +10,8 @@ export default function CursorGlow() {
     const glow = glowRef.current;
     if (!glow) return;
 
+    const media = gsap.matchMedia();
+
     const moveX = gsap.quickTo(glow, "x", {
       duration: 0.5,
       ease: "power3",
@@ -31,6 +33,7 @@ export default function CursorGlow() {
       window.removeEventListener("mousemove", handleMouseMove);
       gsap.killTweensOf(glow);
     };
+    return () => media.revert();
   }, []);
 
   return (

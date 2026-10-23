@@ -60,6 +60,7 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            suppressHydrationWarning
             className="text-slate-900 dark:text-white"
           >
             {open ? <X size={24} /> : <Menu size={24} />}

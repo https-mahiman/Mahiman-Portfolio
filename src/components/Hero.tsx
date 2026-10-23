@@ -67,99 +67,118 @@ export default function Hero() {
 
     if (reducedMotion) return;
 
-    const ctx = gsap.context(() => {
-      const timeline = gsap.timeline({
-        defaults: { ease: "power3.out" },
-      });
+    let ctx: gsap.Context | undefined;
 
-      timeline
-        .from(".hero-eyebrow", {
-          y: 16,
-          opacity: 0,
-          duration: 0.5,
-        })
-        .from(
-          ".hero-title-line",
-          {
-            y: 32,
+    const startHeroAnimation = () => {
+      // Prevent the animation from starting more than once
+      if (ctx) return;
+
+      ctx = gsap.context(() => {
+        const timeline = gsap.timeline({
+          defaults: { ease: "power3.out" },
+        });
+
+        // Hero entrance animation
+        timeline
+          .from(".hero-eyebrow", {
+            y: 16,
             opacity: 0,
-            stagger: 0.12,
-            duration: 0.65,
-          },
-          "-=0.2",
-        )
-        .from(
-          ".hero-description, .hero-actions, .hero-social",
-          {
-            y: 18,
-            opacity: 0,
-            stagger: 0.12,
             duration: 0.5,
-          },
-          "-=0.25",
-        )
-        .from(
-          ".hero-orbit, .hero-blob, .hero-monogram",
-          {
-            scale: 0.88,
-            opacity: 0,
-            stagger: 0.1,
-            duration: 0.75,
-          },
-          "-=0.6",
-        )
-        .from(
-          ".hero-floating",
-          {
-            y: 12,
-            opacity: 0,
-            stagger: 0.1,
-            duration: 0.4,
-          },
-          "-=0.35",
-        );
+          })
+          .from(
+            ".hero-title-line",
+            {
+              y: 32,
+              opacity: 0,
+              stagger: 0.12,
+              duration: 0.65,
+            },
+            "-=0.2",
+          )
+          .from(
+            ".hero-description, .hero-actions, .hero-social",
+            {
+              y: 18,
+              opacity: 0,
+              stagger: 0.12,
+              duration: 0.5,
+            },
+            "-=0.25",
+          )
+          .from(
+            ".hero-orbit, .hero-blob, .hero-monogram",
+            {
+              scale: 0.88,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.75,
+            },
+            "-=0.6",
+          )
+          .from(
+            ".hero-floating",
+            {
+              y: 12,
+              opacity: 0,
+              stagger: 0.1,
+              duration: 0.4,
+            },
+            "-=0.35",
+          );
 
-      gsap.to(".hero-blob", {
-        rotate: 8,
-        scale: 1.035,
-        duration: 4,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-      });
+        // Continuous animations
+        gsap.to(".hero-blob", {
+          rotate: 8,
+          scale: 1.035,
+          duration: 4,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        });
 
-      gsap.to(".hero-code-card", {
-        y: -8,
-        duration: 2.6,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-      });
+        gsap.to(".hero-code-card", {
+          y: -8,
+          duration: 2.6,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        });
 
-      gsap.to(".hero-tag-bottom", {
-        y: 7,
-        duration: 3.1,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-      });
+        gsap.to(".hero-tag-bottom", {
+          y: 7,
+          duration: 3.1,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        });
 
-      gsap.to(".hero-orbit-one", {
-        rotate: 335,
-        duration: 30,
-        ease: "none",
-        repeat: -1,
-      });
+        gsap.to(".hero-orbit-one", {
+          rotate: 335,
+          duration: 30,
+          ease: "none",
+          repeat: -1,
+        });
 
-      gsap.to(".hero-orbit-two", {
-        rotate: 405,
-        duration: 36,
-        ease: "none",
-        repeat: -1,
-      });
-    }, section);
+        gsap.to(".hero-orbit-two", {
+          rotate: 405,
+          duration: 36,
+          ease: "none",
+          repeat: -1,
+        });
+      }, section);
+    };
 
-    return () => ctx.revert();
+    // Wait until InitialLoader finishes
+    window.addEventListener("portfolio-loader-complete", startHeroAnimation);
+
+    return () => {
+      window.removeEventListener(
+        "portfolio-loader-complete",
+        startHeroAnimation,
+      );
+
+      ctx?.revert();
+    };
   }, []);
 
   return (
@@ -237,30 +256,44 @@ export default function Hero() {
 
         {/* Social links */}
         <div className="hero-social mt-8 flex flex-wrap items-center gap-3">
+          {/* GitHub */}
           <a
             href="https://github.com/https-mahiman"
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
-            className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-xs font-bold text-slate-700 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-700 dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:text-blue-300"
+            className="group grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-slate-700 transition-all duration-300 hover:-translate-y-1 hover:border-[#24292e] hover:bg-[#24292e] hover:text-white dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:border-[#24292e]"
           >
             <FaGithub size={24} />
           </a>
 
+          {/* LinkedIn */}
           <a
             href="https://www.linkedin.com/in/mahiman-bhatt/"
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
-            className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-xs font-bold text-slate-700 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-700 dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:text-blue-300"
+            className="group grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-slate-700 transition-all duration-300 hover:-translate-y-1 hover:border-[#0A66C2] hover:bg-[#0A66C2] hover:text-white dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:border-[#0A66C2]"
           >
             <FaLinkedin size={24} />
           </a>
 
+          {/* Instagram */}
+          <a
+            href="https://www.instagram.com/404mahiman/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Instagram"
+            className="group grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-slate-700 transition-all duration-300 hover:-translate-y-1 hover:border-[#E1306C] hover:bg-[#E1306C] hover:text-white dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:border-[#E1306C]"
+          >
+            <FaInstagram size={24} />
+          </a>
+
+          {/* Email */}
           <a
             href="mailto:work.mahiman@gmail.com"
             aria-label="Email"
-            className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-sm text-slate-700 transition hover:-translate-y-1 hover:border-blue-300/30 hover:text-blue-700 dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:text-blue-300"
+            className="group grid h-10 w-10 place-items-center rounded-full border border-slate-300 bg-white text-slate-700 transition-all duration-300 hover:-translate-y-1 hover:border-[#EA4335] hover:bg-[#EA4335] hover:text-white dark:border-white/10 dark:bg-[#080b14] dark:text-slate-200 dark:hover:border-[#EA4335]"
           >
             <FaEnvelope size={24} />
           </a>

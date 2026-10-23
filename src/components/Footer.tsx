@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaEnvelope, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 async function CopyrightYear() {
   await connection();
@@ -50,6 +50,18 @@ export default function Footer() {
           >
             {/* Add  */}
             <FaLinkedin size={19} />
+            {/* here if you want the icon. */}
+          </a>
+
+          <a
+            href="https://www.instagram.com/404mahiman/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+            className="hover:text-slate-900 dark:hover:text-white"
+          >
+            {/* Add  */}
+            <FaInstagram size={19} />
             {/* here if you want the icon. */}
           </a>
 

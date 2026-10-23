@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { ArrowUpRight, Mail, MapPin } from "lucide-react";
+import { ArrowUpRight, LoaderCircle, Mail, MapPin, Send } from "lucide-react";
 
 export default function Contact() {
   const [sending, setSending] = useState(false);
@@ -102,7 +102,7 @@ export default function Contact() {
                 htmlFor="name"
                 className="mb-2 block text-sm text-slate-700 dark:text-slate-200"
               >
-                Your name
+                Your name <span className="text-red-600">*</span>
               </label>
               <input
                 id="name"
@@ -123,7 +123,7 @@ export default function Contact() {
                 htmlFor="email"
                 className="mb-2 block text-sm text-slate-700 dark:text-slate-200"
               >
-                Email address
+                Email address <span className="text-red-600">*</span>
               </label>
               <input
                 id="email"
@@ -144,7 +144,7 @@ export default function Contact() {
               htmlFor="subject"
               className="mb-2 block text-sm text-slate-700 dark:text-slate-200"
             >
-              Subject
+              Subject <span className="text-red-600">*</span>
             </label>
             <input
               id="subject"
@@ -163,8 +163,9 @@ export default function Contact() {
               htmlFor="message"
               className="mb-2 block text-sm text-slate-700 dark:text-slate-200"
             >
-              Message
+              Message <span className="text-red-600">*</span>
             </label>
+
             <textarea
               id="message"
               name="message"
@@ -176,6 +177,11 @@ export default function Contact() {
               placeholder="Tell me about your project..."
               className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none placeholder:text-slate-500 focus:border-blue-400 dark:border-white/10 dark:bg-white/[0.035] dark:text-white dark:placeholder:text-slate-600"
             />
+
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+              Please include your contact details, such as your email address,
+              phone number, or Instagram DM, so I can get in touch with you.
+            </p>
           </div>
 
           {/* Honeypot: the backend must reject submissions with this field filled. */}
@@ -204,10 +210,22 @@ export default function Contact() {
             type="submit"
             disabled={sending}
             suppressHydrationWarning
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-blue-500 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="group mt-6 inline-flex items-center gap-2 rounded-full bg-blue-500 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {sending ? "Sending..." : "Send message"}
-            {!sending && <ArrowUpRight size={17} />}
+            {sending ? (
+              <>
+                Sending...
+                <LoaderCircle size={17} className="animate-spin" />
+              </>
+            ) : (
+              <>
+                Send message
+                <Send
+                  size={17}
+                  className="transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:translate-x-1"
+                />
+              </>
+            )}
           </button>
         </form>
       </div>
