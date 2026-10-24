@@ -1,8 +1,8 @@
-"use client";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import projects from "@/data/projects.json";
+import DeferredProjectDemo from "@/components/DeferredProjectDemo";
 
 export default function Projects() {
   return (
@@ -48,29 +48,23 @@ export default function Projects() {
                   {project.initials}
                 </span> */}
 
-                <div
-                  ref={(el) => {
-                    if (el) {
-                      el.style.setProperty("--preview-scale", "1");
-                    }
-                  }}
-                  className="relative h-74 w-full overflow-hidden bg-slate-100 dark:bg-[#0b0f1a]"
-                >
+                <div className="relative h-74 w-full overflow-hidden bg-slate-100 dark:bg-[#0b0f1a]">
                   {project.image ? (
                     <Image
                       src={project.image}
                       alt={`${project.name} screenshot`}
                       width={1200}
                       height={675}
+                      sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 600px"
                       className="h-full w-full object-contain"
                       loading="lazy"
                     />
                   ) : project.demo ? (
-                    <iframe
+                    <DeferredProjectDemo
                       src={project.demo}
                       title={`${project.name} website preview`}
-                      className="absolute left-0 top-0 h-200 w-7xl origin-top-left scale-50 border-0"
-                      loading="lazy"
+                      initials={project.initials}
+                      color={project.color}
                     />
                   ) : (
                     <div

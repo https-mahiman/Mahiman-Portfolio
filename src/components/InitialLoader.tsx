@@ -1,95 +1,11 @@
-// "use client";
-
-// import { useEffect, useRef, useState } from "react";
-// import gsap from "gsap";
-// import Image from "next/image";
-
-// type InitialLoaderProps = {
-//   children: React.ReactNode;
-// };
-
-// export default function InitialLoader({ children }: InitialLoaderProps) {
-//   const loaderRef = useRef<HTMLDivElement>(null);
-//   const [isLoaded, setIsLoaded] = useState(false);
-//   const [progress, setProgress] = useState(0);
-
-//   useEffect(() => {
-//     const counter = { value: 0 };
-
-//     const counterTween = gsap.to(counter, {
-//       value: 100,
-//       duration: 1.5,
-//       ease: "power1.inOut",
-//       onUpdate: () => {
-//         setProgress(Math.round(counter.value));
-//       },
-//       onComplete: () => {
-//         const loader = loaderRef.current;
-
-//         if (!loader) {
-//           setIsLoaded(true);
-//           return;
-//         }
-
-//         gsap.to(loader, {
-//           yPercent: -100,
-//           duration: 1.2,
-//           ease: "power4.inOut",
-//           onComplete: () => {
-//             setIsLoaded(true);
-//           },
-//         });
-//       },
-//     });
-
-//     return () => {
-//       counterTween.kill();
-//       gsap.killTweensOf(loaderRef.current);
-//     };
-//   }, []);
-
-//   return (
-//     <>
-//       {!isLoaded && (
-//         <div
-//           ref={loaderRef}
-//           className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-black text-white"
-//         >
-//           {/* Logo */}
-//           <div className="mb-8">
-//             <Image
-//               src="/images/MB.webp"
-//               alt="Mahiman logo"
-//               width={350}
-//               height={350}
-//               priority
-//               className="h-auto w-50 object-contain"
-//             />
-//           </div>
-
-//           {/* Percentage */}
-//           <div className="mb-4 text-7xl font-bold tabular-nums text-white">
-//             {progress}%
-//           </div>
-
-//           <p className="mt-4 text-sm tracking-widest text-white/60">LOADING</p>
-//         </div>
-//       )}
-
-//       <div className={`transition-opacity duration-700 opacity-100`}>
-//         {children}
-//       </div>
-//     </>
-//   );
-// }
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import gsap from "gsap";
 
 type InitialLoaderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export default function InitialLoader({ children }: InitialLoaderProps) {
@@ -106,59 +22,74 @@ export default function InitialLoader({ children }: InitialLoaderProps) {
 
     if (!name || !loader) return;
 
+    // Respect accessibility preferences.
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    // Detect smaller screens.
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+    const dispatchComplete = () => {
+      window.dispatchEvent(new Event("portfolio-loader-complete"));
+    };
+
+    // Skip animations for reduced-motion users.
+    if (prefersReducedMotion) {
+      setProgress(100);
+      setIsLoaded(true);
+      dispatchComplete();
+      return;
+    }
+
     const counter = { value: 0 };
 
-    // Calculate zoom needed to cover the screen
+    // Calculate only the zoom required to fill the screen.
     const calculateZoom = () => {
       const nameWidth = name.offsetWidth;
       const nameHeight = name.offsetHeight;
 
-      if (!nameWidth || !nameHeight) return 20;
+      if (!nameWidth || !nameHeight) return 1;
 
       const scaleX = window.innerWidth / nameWidth;
       const scaleY = window.innerHeight / nameHeight;
 
-      return Math.max(scaleX, scaleY) * 1.5;
+      // Small extra coverage avoids visible edges.
+      return Math.max(scaleX, scaleY) * 1.15;
     };
 
-    const counterTween = gsap.to(counter, {
-      value: 100,
-      duration: 1.5,
-      ease: "power1.inOut",
+    // Shorter animations on mobile.
+    const counterDuration = isMobile ? 0.9 : 1.4;
+    const zoomDuration = isMobile ? 0.65 : 1.0;
 
-      onUpdate: () => {
-        setProgress(Math.round(counter.value));
-      },
+    const animationContext = gsap.context(() => {
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          setIsLoaded(true);
+          dispatchComplete();
+        },
+      });
 
-      onComplete: () => {
-        gsap.to(name, {
-          scale: calculateZoom(),
-          duration: 1.2,
-          ease: "power4.in",
-          transformOrigin: "center center",
+      timeline.to(counter, {
+        value: 100,
+        duration: counterDuration,
+        ease: "power1.out",
 
-          onComplete: () => {
-            setIsLoaded(true);
+        onUpdate: () => {
+          setProgress(Math.round(counter.value));
+        },
+      });
 
-            window.dispatchEvent(new Event("portfolio-loader-complete"));
-
-            gsap.fromTo(
-              homeRef.current,
-              { opacity: 0 },
-              {
-                opacity: 1,
-                duration: 0.2,
-                ease: "power2.out",
-              },
-            );
-          },
-        });
-      },
-    });
+      timeline.to(name, {
+        scale: calculateZoom(),
+        duration: zoomDuration,
+        ease: "power3.in",
+        transformOrigin: "center center",
+      });
+    }, loader);
 
     return () => {
-      counterTween.kill();
-      gsap.killTweensOf(name);
+      animationContext.revert();
     };
   }, []);
 
@@ -167,7 +98,12 @@ export default function InitialLoader({ children }: InitialLoaderProps) {
       {!isLoaded && (
         <div
           ref={loaderRef}
-          className="fixed inset-0 z-9999 flex flex-col items-center justify-center overflow-hidden bg-transparent text-white"
+          className="
+            fixed inset-0 z-9999
+            flex flex-col items-center justify-center
+            overflow-hidden
+            bg-transparent text-white
+          "
         >
           {/* Animated Name */}
           <div
@@ -180,7 +116,11 @@ export default function InitialLoader({ children }: InitialLoaderProps) {
               leading-[0.95]
               tracking-tight
               wrap-break-word
+              transform-gpu
             "
+            style={{
+              willChange: "transform",
+            }}
           >
             Mahiman
             <span className="text-blue-600 dark:text-blue-400"> Bhatt.</span>
@@ -191,11 +131,8 @@ export default function InitialLoader({ children }: InitialLoaderProps) {
             className="
               absolute
               bottom-[max(2rem,env(safe-area-inset-bottom))]
-              text-2xl
-              sm:text-3xl
-              md:text-4xl
-              font-bold
-              tabular-nums
+              text-2xl sm:text-3xl md:text-4xl
+              font-bold tabular-nums
             "
           >
             {progress}%
@@ -206,9 +143,10 @@ export default function InitialLoader({ children }: InitialLoaderProps) {
       {/* Homepage */}
       <div
         ref={homeRef}
-        className={`transition-opacity duration-700 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
+        className={`
+          transition-opacity duration-500
+          ${isLoaded ? "opacity-100" : "opacity-0"}
+        `}
       >
         {children}
       </div>

@@ -7,7 +7,6 @@ import {
   FaGithub,
   FaLinkedin,
   FaInstagram,
-  FaVoicemail,
   FaEnvelope,
   FaArrowRight,
   FaDownload,

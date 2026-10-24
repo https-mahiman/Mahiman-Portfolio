@@ -130,7 +130,7 @@ export default function PortraitFrame() {
     >
       <div className="relative aspect-4/5 overflow-hidden rounded-2xl bg-linear-to-br from-slate-800 to-blue-950">
         <Image
-          src="/images/mahiman.webp"
+          src="/images/mahiman-v2.webp"
           alt="Portrait of Mahiman Bhatt"
           width={600}
           height={750}

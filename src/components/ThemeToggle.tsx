@@ -18,7 +18,7 @@ export default function ThemeToggle() {
 
   const isDark = mounted && theme === "dark";
 
-  const handleThemeChange = () => {
+  const handleThemeChange = async () => {
     if (!buttonRef.current || animatingRef.current || !mounted) return;
 
     const nextTheme = theme === "dark" ? "light" : "dark";
