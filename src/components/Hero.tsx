@@ -95,7 +95,7 @@ export default function Hero() {
             "-=0.2",
           )
           .from(
-            ".hero-description, .hero-actions, .hero-social",
+            ".hero-actions, .hero-social",
             {
               y: 18,
               opacity: 0,

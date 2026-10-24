@@ -210,7 +210,19 @@ export default function Contact() {
             type="submit"
             disabled={sending}
             suppressHydrationWarning
-            className="group mt-6 inline-flex items-center gap-2 rounded-full bg-blue-500 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="
+    group mt-6 inline-flex items-center gap-2
+    rounded-full bg-blue-700 px-6 py-3.5
+    font-semibold text-white
+    transition-colors duration-300
+    hover:bg-blue-800
+    disabled:cursor-not-allowed
+    disabled:bg-blue-700
+    disabled:text-white
+    focus-visible:outline-2
+    focus-visible:outline-offset-4
+    focus-visible:outline-blue-500
+  "
           >
             {sending ? (
               <>
